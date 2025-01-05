@@ -101,6 +101,7 @@
 
             video.addEventListener('ended', () => {
                 buttons[index].style.display = 'block';
+                video.controls = false; // Disable video controls
             });
         });
 
