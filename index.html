@@ -12,7 +12,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            background-color: #f0f0f0;
         }
 
         h1 {
@@ -28,14 +28,18 @@
             gap: 20px;
             width: 100%;
             max-width: 800px;
+            align-items: center;
         }
 
         .video-wrapper {
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .video-wrapper video {
-            width: 100%;
+            width: 90%; /* Mudando a largura para 90% */
             height: auto;
             margin: 0 auto;
         }
@@ -43,8 +47,8 @@
         .video-wrapper .overlay {
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
+            left: 50%; /* Centraliza horizontalmente */
+            width: 90%; /* Largura ajustada para 90% */
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             display: flex;
@@ -53,6 +57,7 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.5s ease, visibility 0.5s ease;
+            transform: translateX(-50%); /* Centraliza a overlay */
         }
 
         .video-wrapper .overlay.active {
@@ -87,7 +92,7 @@
             }
 
             .video-wrapper video {
-                width: calc(33.33% - 20px);
+                width: calc(30% - 20px);
             }
         }
     </style>
