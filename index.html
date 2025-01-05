@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Videos</title>
+    <title>Sarinha Leite</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"> <!-- Link para o Font Awesome -->
     <style>
         body {
@@ -86,10 +87,16 @@
             opacity: 1;
         }
 
-        .whatsapp-button {
+        .whatsapp-container {
             position: fixed;
             bottom: 20px;
             right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Espaço entre o balão de mensagem e o botão */
+        }
+
+        .whatsapp-button {
             background-color: #25D366;
             color: #fff;
             border-radius: 50%;
@@ -112,6 +119,45 @@
             font-size: 40px; /* Aumentei o tamanho do ícone */
             color: #ffffff; /* Deixa o ícone branco */
             text-decoration: none; /* Remove qualquer linha */
+        }
+
+        .message-bubble {
+            background-color: #ffffff; /* Cor de fundo do balão de mensagem branco */
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            max-width: 250px;
+            justify-content: flex-start;
+            text-align: left;
+            white-space: nowrap;
+            position: relative; /* Mudança para ajustar o quadradinho no canto */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 2s ease, visibility 2s ease;
+        }
+
+        .message-bubble.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .message-bubble i {
+            margin-left: 5px;
+        }
+
+        .message-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 20px; /* Ajustado para manter o quadrado no canto direito */
+            width: 20px;
+            height: 20px;
+            background-color: #ffffff; /* Cor do balão de mensagem */
+            transform: rotate(45deg);
         }
 
         @media (min-width: 768px) {
@@ -150,12 +196,24 @@
         </div>
     </div>
 
-    <!-- WhatsApp Button -->
-    <a href="https://wa.me/1234567890" class="whatsapp-button" target="_blank">
-        <i class="fab fa-whatsapp"></i> <!-- Ícone do WhatsApp -->
-    </a>
+    <!-- WhatsApp Container -->
+    <div class="whatsapp-container">
+        <!-- Message Bubble -->
+        <div class="message-bubble">
+            Vem ver completinho meu bem 🔥
+        </div>
+        <!-- WhatsApp Button -->
+        <a href="https://wa.me/1234567890" class="whatsapp-button" target="_blank">
+            <i class="fab fa-whatsapp"></i> <!-- Ícone do WhatsApp -->
+        </a>
+    </div>
 
     <script>
+        // Função para mostrar o balão de mensagem após 10 segundos
+        setTimeout(() => {
+            document.querySelector('.message-bubble').classList.add('visible');
+        }, 10000); // 10 segundos
+
         const videos = document.querySelectorAll('video');
         const wrappers = document.querySelectorAll('.video-wrapper');
 
