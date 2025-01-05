@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Responsive Videos</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"> <!-- Link para o Font Awesome -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -85,6 +86,34 @@
             opacity: 1;
         }
 
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25D366;
+            color: #fff;
+            border-radius: 50%;
+            width: 60px; /* Tamanho fixo para garantir o círculo perfeito */
+            height: 60px; /* Tamanho fixo para garantir o círculo perfeito */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none; /* Remover sublinhado */
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+        }
+
+        .whatsapp-button i {
+            font-size: 40px; /* Aumentei o tamanho do ícone */
+            color: #ffffff; /* Deixa o ícone branco */
+            text-decoration: none; /* Remove qualquer linha */
+        }
+
         @media (min-width: 768px) {
             .video-container {
                 flex-direction: row;
@@ -120,6 +149,12 @@
             </div>
         </div>
     </div>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/1234567890" class="whatsapp-button" target="_blank">
+        <i class="fab fa-whatsapp"></i> <!-- Ícone do WhatsApp -->
+    </a>
+
     <script>
         const videos = document.querySelectorAll('video');
         const wrappers = document.querySelectorAll('.video-wrapper');
