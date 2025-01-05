@@ -30,15 +30,22 @@
             max-width: 800px;
         }
 
-        .video-container video {
+        .video-wrapper {
+            position: relative;
+        }
+
+        .video-wrapper video {
             width: 100%;
             height: auto;
             margin: 0 auto;
         }
 
         .view-button {
-            display: block;
-            margin: 20px auto;
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             padding: 10px 20px;
             background-color: #007BFF;
             color: #fff;
@@ -56,15 +63,8 @@
                 justify-content: space-between;
             }
 
-            .video-container video {
+            .video-wrapper video {
                 width: calc(33.33% - 20px);
-            }
-
-            .view-button {
-                position: absolute;
-                bottom: 20px;
-                left: 50%;
-                transform: translateX(-50%);
             }
         }
     </style>
@@ -72,10 +72,43 @@
 <body>
     <h1>Assista aos Nossos Vídeos</h1>
     <div class="video-container">
-        <video src="video.mp4" controls></video>
-        <video src="video.mp4" controls></video>
-        <video src="video.mp4" controls></video>
+        <div class="video-wrapper">
+            <video src="video.mp4" controls></video>
+            <button class="view-button">Ver Conteúdo Completo</button>
+        </div>
+        <div class="video-wrapper">
+            <video src="video.mp4" controls></video>
+            <button class="view-button">Ver Conteúdo Completo</button>
+        </div>
+        <div class="video-wrapper">
+            <video src="video.mp4" controls></video>
+            <button class="view-button">Ver Conteúdo Completo</button>
+        </div>
     </div>
-    <button class="view-button">Ver Conteúdo Completo</button>
+    <script>
+        const videos = document.querySelectorAll('video');
+        const buttons = document.querySelectorAll('.view-button');
+
+        videos.forEach((video, index) => {
+            video.addEventListener('play', () => {
+                // Pause other videos
+                videos.forEach((v, i) => {
+                    if (i !== index) {
+                        v.pause();
+                    }
+                });
+            });
+
+            video.addEventListener('ended', () => {
+                buttons[index].style.display = 'block';
+            });
+        });
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                alert('Conteúdo completo acessado!');
+            });
+        });
+    </script>
 </body>
 </html>
