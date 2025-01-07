@@ -6,8 +6,8 @@
     <title>Galeria de Stories</title>
     <style>
         body {
-            margin: 0;
-            padding: 20px;
+            margin: 3px;
+            padding: 3px;
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
         }
@@ -16,15 +16,14 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 6px; /* Espaçamento entre containers aumentado */
         }
 
-        /* Container para a imagem e o vídeo, com a proporção 9:16 */
         .gallery-item {
             position: relative;
-            width: 48%; /* Cada item ocupa 48% da largura do contêiner */
+            width: calc(48% + 6px); /* Largura ajustada anteriormente */
             height: 0;
-            padding-bottom: 177%; /* 9:16 - altura é 1,77x a largura */
+            padding-bottom: calc(177% + 10px); /* Mantém a proporção 9:16 */
             background-color: #000;
             display: flex;
             justify-content: center;
@@ -32,18 +31,16 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            position: relative;
         }
 
-        /* Ajuste de imagem e vídeo */
         .gallery-item img,
         .gallery-item video {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%; /* largura é 100% do contêiner */
-            height: 100%; /* altura ajustada para manter a proporção */
-            object-fit: cover; /* Para garantir que as imagens e vídeos cubram o espaço sem distorcer */
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .gallery-item .play-icon {
@@ -56,7 +53,6 @@
             display: block;
         }
 
-        /* Contêiner com a imagem e o vídeo lado a lado */
         .row {
             display: flex;
             justify-content: space-between;
@@ -64,34 +60,34 @@
         }
 
         .row .gallery-item {
-            width: 48%; /* 2 itens lado a lado com 48% de largura */
+            width: calc(48% + 6px); /* Largura ajustada anteriormente */
         }
 
-        /* Ajustes de responsividade para dispositivos móveis */
         @media (max-width: 768px) {
             .container {
-                flex-direction: column; /* 1 coluna em telas menores */
-                gap: 20px;
+                flex-direction: column;
+                gap: 6px; /* Espaçamento ajustado para dispositivos menores */
             }
+
             .gallery-item {
-                width: 100%; /* Itens ocupando 100% em telas pequenas */
-                padding-bottom: 100%; /* Mantém a proporção 9:16 */
+                width: calc(100% + 6px); /* Largura ajustada anteriormente */
+                padding-bottom: calc(100% + 6px); /* Mantém a proporção 9:16 */
             }
         }
 
         @media (max-width: 480px) {
             .container {
-                flex-direction: column; /* 1 coluna em telas muito pequenas */
+                flex-direction: column;
             }
+
             .gallery-item {
-                width: 100%;
-                padding-bottom: 100%; /* Mantém a proporção 9:16 */
+                width: calc(100% + 6px); /* Largura ajustada anteriormente */
+                padding-bottom: calc(100% + 6px); /* Mantém a proporção 9:16 */
             }
         }
     </style>
 </head>
 <body>
-    <!-- Primeiro contêiner com 2 itens (imagem e vídeo lado a lado) -->
     <div class="container">
         <div class="row">
             <div class="gallery-item">
@@ -107,7 +103,6 @@
         </div>
     </div>
 
-    <!-- Segundo contêiner com 2 itens (imagem e vídeo lado a lado) -->
     <div class="container">
         <div class="row">
             <div class="gallery-item">
@@ -123,7 +118,6 @@
         </div>
     </div>
 
-    <!-- Terceiro contêiner com 2 itens (imagem e vídeo lado a lado) -->
     <div class="container">
         <div class="row">
             <div class="gallery-item">
@@ -140,7 +134,6 @@
     </div>
 
     <script>
-        // Função para verificar se o vídeo está no centro da tela
         function checkVideoInView() {
             const videos = document.querySelectorAll('video');
             let playingVideo = null;
@@ -151,7 +144,7 @@
 
                 if (isVisible && rect.top >= 0 && rect.bottom <= window.innerHeight) {
                     if (!playingVideo) {
-                        playingVideo = video; // Define o vídeo a ser reproduzido
+                        playingVideo = video;
                     }
                 }
             });
@@ -160,20 +153,18 @@
                 if (video === playingVideo) {
                     if (video.paused) {
                         video.play();
-                        video.nextElementSibling.style.display = 'none'; // Esconde o botão de play
+                        video.nextElementSibling.style.display = 'none';
                     }
                 } else {
                     if (!video.paused) {
                         video.pause();
-                        video.nextElementSibling.style.display = 'block'; // Mostra o botão de play
+                        video.nextElementSibling.style.display = 'block';
                     }
                 }
             });
         }
 
-        // Executar a função ao rolar a página
         window.addEventListener('scroll', checkVideoInView);
-        // Executar a função quando a página for carregada
         window.addEventListener('load', checkVideoInView);
     </script>
 </body>
