@@ -3,248 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeria Interativa</title>
+    <title>Galeria de Stories</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
-            overflow: hidden;
         }
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-            padding: 10px;
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* Para permitir que as colunas quebrem para a linha seguinte */
         }
+
+        /* Container para a imagem e o vídeo, com a proporção 9:16 */
         .gallery-item {
             position: relative;
-            border-radius: 8px;
+            width: 48%; /* Cada item ocupa 48% da largura do contêiner */
+            height: 0;
+            padding-bottom: 177%; /* 9:16 - altura é 1,77x a largura */
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
             overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            position: relative;
         }
+
+        /* Ajuste de imagem e vídeo */
         .gallery-item img,
         .gallery-item video {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover;
+            height: 100%;
+            object-fit: cover; /* Para garantir que as imagens e vídeos cubram o espaço sem distorcer */
         }
-        .play-icon {
+
+        .gallery-item .play-icon {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 30px;
+            font-size: 40px;
             color: white;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
+        }
+
+        /* Contêiner com a imagem e o vídeo lado a lado */
+        .row {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-        }
-        .fullscreen-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+            justify-content: space-between;
             width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            overflow: hidden;
         }
-        .fullscreen-content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
+
+        .row .gallery-item {
+            width: 48%; /* 2 itens lado a lado com 48% de largura */
         }
-        .fullscreen-content img,
-        .fullscreen-content video {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            border-radius: 8px;
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column; /* 1 coluna em telas menores */
+                gap: 20px;
+            }
+            .gallery-item {
+                width: 100%; /* Itens ocupando 100% em telas pequenas */
+                padding-bottom: 177%;
+            }
         }
-        .fullscreen-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .fullscreen-close:hover {
-            background-color: #c0392b;
-        }
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 3;
-        }
-        .popup-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-        }
-        .popup-content h2 {
-            margin: 0 0 20px;
-            font-size: 20px;
-            color: #333;
-        }
-        .popup-content p {
-            font-size: 16px;
-            color: #555;
-            margin-bottom: 20px;
-        }
-        .popup-content button {
-            padding: 12px 20px;
-            background-color: #E74C3C;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-        .popup-content button:hover {
-            background-color: #C0392B;
+
+        @media (max-width: 480px) {
+            .container {
+                flex-direction: column; /* 1 coluna em telas muito pequenas */
+            }
+            .gallery-item {
+                width: 100%;
+                padding-bottom: 177%;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Galeria -->
-    <div class="gallery">
-        <div class="gallery-item">
-            <img src="foto.png" alt="Foto 1">
-        </div>
-        <div class="gallery-item">
-            <video>
-                <source src="video.mp4" type="video/mp4">
-                Seu navegador não suporta vídeos.
-            </video>
-            <div class="play-icon">▶</div>
-        </div>
-        <div class="gallery-item">
-            <img src="foto.png" alt="Foto 2">
-        </div>
-        <div class="gallery-item">
-            <video>
-                <source src="video.mp4" type="video/mp4">
-                Seu navegador não suporta vídeos.
-            </video>
-            <div class="play-icon">▶</div>
+    <!-- Primeiro contêiner com 2 itens (imagem e vídeo lado a lado) -->
+    <div class="container">
+        <div class="row">
+            <div class="gallery-item">
+                <img src="foto.png" alt="Imagem 1">
+            </div>
+            <div class="gallery-item">
+                <video autoplay muted loop>
+                    <source src="video.mp4" type="video/mp4">
+                    Seu navegador não suporta vídeos.
+                </video>
+                <div class="play-icon">▶</div>
+            </div>
         </div>
     </div>
 
-    <!-- Tela cheia -->
-    <div class="fullscreen-overlay" id="fullscreen">
-        <div class="fullscreen-content" id="fullscreen-content">
-            <button class="fullscreen-close" id="close-fullscreen">&times;</button>
+    <!-- Segundo contêiner com 2 itens (imagem e vídeo lado a lado) -->
+    <div class="container">
+        <div class="row">
+            <div class="gallery-item">
+                <img src="foto.png" alt="Imagem 2">
+            </div>
+            <div class="gallery-item">
+                <video autoplay muted loop>
+                    <source src="video.mp4" type="video/mp4">
+                    Seu navegador não suporta vídeos.
+                </video>
+                <div class="play-icon">▶</div>
+            </div>
         </div>
     </div>
 
-    <!-- Pop-up -->
-    <div class="popup-overlay" id="popup">
-        <div class="popup-content">
-            <h2>Acesso Premium</h2>
-            <p>Para continuar acessando o conteúdo exclusivo, é necessário pagar a taxa de acesso.</p>
-            <button id="proceed-button">Pagar Taxa</button>
+    <!-- Terceiro contêiner com 2 itens (imagem e vídeo lado a lado) -->
+    <div class="container">
+        <div class="row">
+            <div class="gallery-item">
+                <img src="foto.png" alt="Imagem 3">
+            </div>
+            <div class="gallery-item">
+                <video autoplay muted loop>
+                    <source src="video.mp4" type="video/mp4">
+                    Seu navegador não suporta vídeos.
+                </video>
+                <div class="play-icon">▶</div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Função de tela cheia
-        const galleryItems = document.querySelectorAll('.gallery-item');
-        const fullscreenOverlay = document.getElementById('fullscreen');
-        const fullscreenContent = document.getElementById('fullscreen-content');
-        const closeFullscreen = document.getElementById('close-fullscreen');
-        let currentIndex = 0;
+        // Função para embaralhar os elementos (opcional)
+        const containers = document.querySelectorAll('.container');
+        
+        containers.forEach(container => {
+            const galleryItems = Array.from(container.children);
 
-        galleryItems.forEach((item, index) => {
-            item.addEventListener('click', () => {
-                currentIndex = index;
-                openFullscreen(item);
-            });
-        });
-
-        closeFullscreen.addEventListener('click', () => {
-            fullscreenOverlay.style.display = 'none';
-        });
-
-        function openFullscreen(item) {
-            const clone = item.cloneNode(true);
-            fullscreenContent.innerHTML = '';
-            fullscreenContent.appendChild(clone.firstElementChild);
-            fullscreenOverlay.style.display = 'flex';
-        }
-
-        // Swipe detection (para dispositivos móveis)
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        fullscreenOverlay.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        fullscreenOverlay.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            if (touchEndX < touchStartX) {
-                // Swipe para esquerda (próximo item)
-                currentIndex = (currentIndex + 1) % galleryItems.length;
-            } else if (touchEndX > touchStartX) {
-                // Swipe para direita (item anterior)
-                currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+            // Embaralhando a ordem dos itens em cada contêiner
+            for (let i = galleryItems.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                container.appendChild(galleryItems[j]);
             }
-
-            // Atualiza o conteúdo da tela cheia com o novo item
-            const newItem = galleryItems[currentIndex];
-            openFullscreen(newItem);
-        }
-
-        // Mostra o pop-up após 30 segundos
-        setTimeout(() => {
-            const popup = document.getElementById('popup');
-            popup.style.display = 'flex';
-        }, 30000);
-
-        // Redireciona ao clicar no botão
-        document.getElementById('proceed-button').addEventListener('click', () => {
-            window.location.href = "https://pay.kiwify.com.br/GifLnah"; // Link para pagar a taxa
         });
     </script>
 </body>
