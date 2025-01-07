@@ -1,244 +1,249 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sarinha Leite</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"> <!-- Link para o Font Awesome -->
+    <title>Galeria Interativa</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #000000;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            overflow: hidden;
         }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 24px;
-            color: #ffffff;
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            padding: 10px;
         }
-
-        .video-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: 100%;
-            max-width: 800px;
-            align-items: center;
-            margin-bottom: 30px; /* Adiciona margem inferior */
-        }
-
-        .video-wrapper {
+        .gallery-item {
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-
-        .video-wrapper video {
-            width: 90%; /* Mudando a largura para 90% */
+        .gallery-item img,
+        .gallery-item video {
+            width: 100%;
             height: auto;
-            margin: 0 auto;
+            display: block;
+            object-fit: cover;
         }
-
-        .video-wrapper .overlay {
+        .play-icon {
             position: absolute;
-            top: 0;
-            left: 50%; /* Centraliza horizontalmente */
-            width: 90%; /* Largura ajustada para 90% */
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-            transform: translateX(-50%); /* Centraliza a overlay */
-        }
-
-        .video-wrapper .overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .view-button {
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: #fff;
-            text-align: center;
-            text-decoration: none;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            transform: scale(0.9);
-            opacity: 0.9;
-        }
-
-        .view-button:hover {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .whatsapp-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px; /* Espaço entre o balão de mensagem e o botão */
-        }
-
-        .whatsapp-button {
-            background-color: #25D366;
-            color: #fff;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
             border-radius: 50%;
-            width: 60px; /* Tamanho fixo para garantir o círculo perfeito */
-            height: 60px; /* Tamanho fixo para garantir o círculo perfeito */
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            overflow: hidden;
+        }
+        .fullscreen-content {
+            width: 100%;
+            max-height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            text-decoration: none; /* Remover sublinhado */
+            position: relative;
         }
-
-        .whatsapp-button:hover {
-            transform: scale(1.1);
+        .fullscreen-content img,
+        .fullscreen-content video {
+            width: auto;
+            max-height: 100%;
+            max-width: 100%;
+            border-radius: 8px;
         }
-
-        .whatsapp-button i {
-            font-size: 40px; /* Aumentei o tamanho do ícone */
-            color: #ffffff; /* Deixa o ícone branco */
-            text-decoration: none; /* Remove qualquer linha */
-        }
-
-        .message-bubble {
-            background-color: #ffffff; /* Cor de fundo do balão de mensagem branco */
-            color: #000;
-            padding: 10px 20px;
-            border-radius: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        .fullscreen-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
-            font-size: 14px;
-            max-width: 250px;
-            justify-content: flex-start;
-            text-align: left;
-            white-space: nowrap;
-            position: relative; /* Mudança para ajustar o quadradinho no canto */
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 2s ease, visibility 2s ease;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
         }
-
-        .message-bubble.visible {
-            opacity: 1;
-            visibility: visible;
+        .fullscreen-close:hover {
+            background-color: #c0392b;
         }
-
-        .message-bubble i {
-            margin-left: 5px;
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
         }
-
-        .message-bubble::after {
-            content: '';
-            position: absolute;
-            bottom: 9px;
-            right: -3px; /* Ajustado para manter o quadrado no canto direito */
-            width: 20px;
-            height: 20px;
-            background-color: #ffffff; /* Cor do balão de mensagem */
-            transform: rotate(45deg);
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
         }
-
-        @media (min-width: 768px) {
-            .video-container {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: space-between;
-            }
-
-            .video-wrapper video {
-                width: calc(30% - 20px);
-            }
+        .popup-content h2 {
+            margin: 0 0 20px;
+            font-size: 20px;
+            color: #333;
+        }
+        .popup-content p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .popup-content button {
+            padding: 12px 20px;
+            background-color: #E74C3C;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .popup-content button:hover {
+            background-color: #C0392B;
         }
     </style>
 </head>
 <body>
-    <h1>Gostou amor? 🤭</h1>
-    <div class="video-container">
-        <div class="video-wrapper">
-            <video src="video.mp4" controls></video>
-            <div class="overlay">
-                <button class="view-button">Ver Conteúdo Completo</button>
-            </div>
+    <!-- Galeria -->
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="foto.png" alt="Foto 1">
         </div>
-        <div class="video-wrapper">
-            <video src="video.mp4" controls></video>
-            <div class="overlay">
-                <button class="view-button">Ver Conteúdo Completo</button>
-            </div>
+        <div class="gallery-item">
+            <video>
+                <source src="video.mp4" type="video/mp4">
+                Seu navegador não suporta vídeos.
+            </video>
+            <div class="play-icon">▶</div>
         </div>
-        <div class="video-wrapper">
-            <video src="video.mp4" controls></video>
-            <div class="overlay">
-                <button class="view-button">Ver Conteúdo Completo</button>
-            </div>
+        <div class="gallery-item">
+            <img src="foto.png" alt="Foto 2">
+        </div>
+        <div class="gallery-item">
+            <video>
+                <source src="video.mp4" type="video/mp4">
+                Seu navegador não suporta vídeos.
+            </video>
+            <div class="play-icon">▶</div>
         </div>
     </div>
 
-    <!-- WhatsApp Container -->
-    <div class="whatsapp-container">
-        <!-- Message Bubble -->
-        <div class="message-bubble">
-            Vem ver tudinho meu bem! 🔥
+    <!-- Tela cheia -->
+    <div class="fullscreen-overlay" id="fullscreen">
+        <div class="fullscreen-content" id="fullscreen-content"></div>
+        <button class="fullscreen-close" id="close-fullscreen">&times;</button>
+    </div>
+
+    <!-- Pop-up -->
+    <div class="popup-overlay" id="popup">
+        <div class="popup-content">
+            <h2>Acesso Premium</h2>
+            <p>Para continuar acessando o conteúdo exclusivo, é necessário pagar a taxa de acesso.</p>
+            <button id="proceed-button">Pagar Taxa</button>
         </div>
-        <!-- WhatsApp Button -->
-        <a href="https://pay.kiwify.com.br/GifLnah" class="whatsapp-button" target="_blank">
-            <i class="fab fa-whatsapp"></i> <!-- Ícone do WhatsApp -->
-        </a>
     </div>
 
     <script>
-        // Função para mostrar o balão de mensagem após 10 segundos
-        setTimeout(() => {
-            document.querySelector('.message-bubble').classList.add('visible');
-        }, 10000); // 10 segundos
+        // Função de tela cheia
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const fullscreenOverlay = document.getElementById('fullscreen');
+        const fullscreenContent = document.getElementById('fullscreen-content');
+        const closeFullscreen = document.getElementById('close-fullscreen');
+        let currentIndex = 0;
 
-        const videos = document.querySelectorAll('video');
-        const wrappers = document.querySelectorAll('.video-wrapper');
-
-        videos.forEach((video, index) => {
-            video.addEventListener('play', () => {
-                // Pause other videos
-                videos.forEach((v, i) => {
-                    if (i !== index) {
-                        v.pause();
-                    }
-                });
-            });
-
-            video.addEventListener('ended', () => {
-                const overlay = wrappers[index].querySelector('.overlay');
-                overlay.classList.add('active');
-                video.controls = false; // Disable video controls
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                currentIndex = index;
+                openFullscreen(item);
             });
         });
 
-        // Atualizando o evento de clique dos botões
-        document.querySelectorAll('.view-button').forEach((button) => {
-            button.addEventListener('click', () => {
-                window.location.href = 'https://pay.kiwify.com.br/GifLnah'; // Redireciona para o link
-            });
+        closeFullscreen.addEventListener('click', () => {
+            fullscreenOverlay.style.display = 'none';
+        });
+
+        function openFullscreen(item) {
+            const clone = item.cloneNode(true);
+            fullscreenContent.innerHTML = '';
+            fullscreenContent.appendChild(clone.firstElementChild);
+            fullscreenOverlay.style.display = 'flex';
+        }
+
+        // Swipe detection (para dispositivos móveis)
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        fullscreenOverlay.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        fullscreenOverlay.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX) {
+                // Swipe para esquerda (próximo item)
+                currentIndex = (currentIndex + 1) % galleryItems.length;
+            } else if (touchEndX > touchStartX) {
+                // Swipe para direita (item anterior)
+                currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+            }
+
+            // Atualiza o conteúdo da tela cheia com o novo item
+            const newItem = galleryItems[currentIndex];
+            openFullscreen(newItem);
+        }
+
+        // Mostra o pop-up após 30 segundos
+        setTimeout(() => {
+            const popup = document.getElementById('popup');
+            popup.style.display = 'flex';
+        }, 30000);
+
+        // Redireciona ao clicar no botão
+        document.getElementById('proceed-button').addEventListener('click', () => {
+            window.location.href = "https://pay.kiwify.com.br/GifLnah"; // Link para pagar a taxa
         });
     </script>
 </body>
