@@ -189,6 +189,56 @@
             });
         });
 
+        // Função para detectar o arraste (swipe)
+        let startX = 0;
+        let startY = 0;
+        let endX = 0;
+        let endY = 0;
+
+        document.querySelectorAll('.container').forEach(container => {
+            container.addEventListener('touchstart', function(e) {
+                startX = e.changedTouches[0].pageX;
+                startY = e.changedTouches[0].pageY;
+            });
+
+            container.addEventListener('touchend', function(e) {
+                endX = e.changedTouches[0].pageX;
+                endY = e.changedTouches[0].pageY;
+
+                let deltaX = endX - startX;
+                let deltaY = endY - startY;
+
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                    if (deltaX > 0) {
+                        // Deslizou para a direita
+                        goToPrevious();
+                    } else {
+                        // Deslizou para a esquerda
+                        goToNext();
+                    }
+                }
+            });
+        });
+
+        // Função para ir para o próximo item
+        function goToNext() {
+            const current = document.querySelector('.gallery-item.active');
+            const next = current ? current.nextElementSibling : document.querySelector('.gallery-item:first-child');
+            if (current) current.classList.remove('active');
+            if (next) next.classList.add('active');
+        }
+
+        // Função para ir para o item anterior
+        function goToPrevious() {
+            const current = document.querySelector('.gallery-item.active');
+            const previous = current ? current.previousElementSibling : document.querySelector('.gallery-item:last-child');
+            if (current) current.classList.remove('active');
+            if (previous) previous.classList.add('active');
+        }
+
+        // Inicializa o primeiro item como ativo
+        document.querySelector('.gallery-item').classList.add('active');
+
         // Executar a função ao rolar a página
         window.addEventListener('scroll', checkVideoInView);
         // Executar a função quando a página for carregada
